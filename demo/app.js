@@ -1,0 +1,1 @@
+var imageHover = simpleImageHover('sih');
