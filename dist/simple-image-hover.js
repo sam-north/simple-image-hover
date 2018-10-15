@@ -1,4 +1,19 @@
 function simpleImageHover(className) {
+    function init() {
+        console.log('setting event listeners');
+        var imagesToHover = document.getElementsByClassName(className);
+        for (var key in imagesToHover) {
+            if (imagesToHover.hasOwnProperty(key)) {
+                var element = imagesToHover[key];
+                console.log('setting event listeners 3');
+                element.removeEventListener('mouseover', handleSimpleImageHoverMouseEnter, false);
+                element.removeEventListener('mouseleave', handleSimpleImageHoverMouseLeave, false);
+                element.addEventListener('mouseover', handleSimpleImageHoverMouseEnter, false);
+                element.addEventListener('mouseleave', handleSimpleImageHoverMouseLeave, false);
+            }
+        }
+    }
+
     function handleSimpleImageHoverMouseEnter(e) {
         console.log('window.innerHeight: ' + window.innerHeight, 'window.innerWidth: ' + window.innerWidth);
         var newContainerElement = document.createElement('span');
@@ -63,21 +78,8 @@ function simpleImageHover(className) {
         imageHoverContainer.remove();
     }
 
-    console.log('setting event listeners');
-    var imagesToHover = document.getElementsByClassName(className);
-    for (var key in imagesToHover) {
-        if (imagesToHover.hasOwnProperty(key)) {
-            var element = imagesToHover[key];
-            console.log('setting event listeners 3');
-            element.addEventListener('mouseover', handleSimpleImageHoverMouseEnter, false);
-            element.addEventListener('mouseleave', handleSimpleImageHoverMouseLeave, false);
-        }
-    }
-    // if (imagesToHover.length) {
-    //     var linkElement = document.createElement('link');
-    //     linkElement.setAttribute('rel', 'stylesheet');
-    //     linkElement.setAttribute('type', 'text/css');
-    //     linkElement.setAttribute('href', 'data:text/css;charset=UTF-8,' + encodeURIComponent(generateCss()));
-    //     document.head.appendChild(linkElement);
-    // }
+    init();
+    return {
+        init: init
+    };
 }
