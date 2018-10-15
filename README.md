@@ -1,1 +1,1 @@
-# simple-image-hover
+# simple-image-hover.js
