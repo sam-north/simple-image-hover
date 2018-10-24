@@ -1,11 +1,9 @@
 function simpleImageHover(className) {
     function init() {
-        console.log('setting event listeners');
         var imagesToHover = document.getElementsByClassName(className);
         for (var key in imagesToHover) {
             if (imagesToHover.hasOwnProperty(key)) {
                 var element = imagesToHover[key];
-                console.log('setting event listeners 3');
                 element.removeEventListener('mouseover', handleSimpleImageHoverMouseEnter, false);
                 element.removeEventListener('mouseleave', handleSimpleImageHoverMouseLeave, false);
                 element.addEventListener('mouseover', handleSimpleImageHoverMouseEnter, false);
@@ -15,7 +13,6 @@ function simpleImageHover(className) {
     }
 
     function handleSimpleImageHoverMouseEnter(e) {
-        console.log('window.innerHeight: ' + window.innerHeight, 'window.innerWidth: ' + window.innerWidth);
         var newContainerElement = document.createElement('span');
         newContainerElement.id = 'sih-c';
         newContainerElement.style.position = 'fixed';
@@ -27,7 +24,6 @@ function simpleImageHover(className) {
 
 
         if (adjustedHeightProperty + offsetAmount > window.innerHeight || adjustedWidthProperty + offsetAmount > window.innerWidth) {
-            console.log('before -- adjusted height: ' + adjustedHeightProperty, 'adjustedWidthProperty: ' + adjustedWidthProperty);
 
             adjustedHeightProperty = window.innerHeight - (offsetAmount * 5);
             adjustedWidthProperty = window.innerWidth - (offsetAmount * 5);
@@ -39,7 +35,6 @@ function simpleImageHover(className) {
                 imageProportionScale = adjustedHeightProperty / window.innerHeight;
                 adjustedWidthProperty = adjustedWidthProperty / imageProportionScale;
             }
-            console.log('after -- adjusted height: ' + adjustedHeightProperty, 'adjustedWidthProperty: ' + adjustedWidthProperty);
         }
 
         var verticalLocation = e.clientY;
@@ -64,7 +59,7 @@ function simpleImageHover(className) {
         }
         horizontalLocation += offsetAmount;
 
-        newContainerElement.setAttribute('style', 'position: fixed; border: solid 3px #222; ' + '' + verticalStyleProperty + ': ' + verticalLocation + 'px;' + '' + horizontalStyleProperty + ': ' + horizontalLocation + 'px;');
+        newContainerElement.setAttribute('style', 'position: fixed;z-index:2147483647; border: solid 3px #222; ' + '' + verticalStyleProperty + ': ' + verticalLocation + 'px;' + '' + horizontalStyleProperty + ': ' + horizontalLocation + 'px;');
         var newImgElement = document.createElement('img');
         newImgElement.src = e.target.src;
         newImgElement.setAttribute('style', 'width: ' + adjustedWidthProperty + 'px; height: ' + adjustedHeightProperty + 'px;');
@@ -73,7 +68,6 @@ function simpleImageHover(className) {
     }
 
     function handleSimpleImageHoverMouseLeave(e) {
-        console.log('handleSimpleImageHoverMouseLeave');
         var imageHoverContainer = document.getElementById('sih-c');
         imageHoverContainer.remove();
     }
