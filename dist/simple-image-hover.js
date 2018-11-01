@@ -1,4 +1,6 @@
 function simpleImageHover(className) {
+    var isHoveringOverLarger = false;
+    var isRemovalTriggeredFromOriginal = false;
     function init() {
         var imagesToHover = document.getElementsByClassName(className);
         for (var key in imagesToHover) {
@@ -14,8 +16,10 @@ function simpleImageHover(className) {
 
     function handleSimpleImageHoverMouseEnter(e) {
         var newContainerElement = document.createElement('span');
-        newContainerElement.id = 'sih-c';
+        newContainerElement.classList.add('sih-c');
         newContainerElement.style.position = 'fixed';
+        newContainerElement.addEventListener('mouseenter', handleMouseOverLargerHoveredImage, false);
+        newContainerElement.addEventListener('mouseleave', handleMouseLeaveLargerHoveredImage, false);
         document.body.appendChild(newContainerElement);
 
         var adjustedHeightProperty = e.target.naturalHeight;
@@ -59,17 +63,38 @@ function simpleImageHover(className) {
         }
         horizontalLocation += offsetAmount;
 
-        newContainerElement.setAttribute('style', 'position: fixed;z-index:2147483647; border: solid 3px #222; ' + '' + verticalStyleProperty + ': ' + verticalLocation + 'px;' + '' + horizontalStyleProperty + ': ' + horizontalLocation + 'px;');
+        newContainerElement.setAttribute('style', 'position: fixed;z-index:2147483647; ' + '' + verticalStyleProperty + ': ' + verticalLocation + 'px;' + '' + horizontalStyleProperty + ': ' + horizontalLocation + 'px;');
         var newImgElement = document.createElement('img');
         newImgElement.src = e.target.src;
         newImgElement.setAttribute('style', 'width: ' + adjustedWidthProperty + 'px; height: ' + adjustedHeightProperty + 'px;');
         newImgElement.classList.add('sih-b');
+
         newContainerElement.appendChild(newImgElement);
     }
 
+    function handleMouseOverLargerHoveredImage() {
+        isHoveringOverLarger = true;
+    }
+
+    function handleMouseLeaveLargerHoveredImage() {
+        isHoveringOverLarger = false;
+        setTimeout(removeImagePreview, 10);
+    }
+
     function handleSimpleImageHoverMouseLeave(e) {
-        var imageHoverContainer = document.getElementById('sih-c');
-        imageHoverContainer.remove();
+        isRemovalTriggeredFromOriginal = true;
+        setTimeout(removeImagePreview, 10);
+    }
+
+    function removeImagePreview() {
+        if (isRemovalTriggeredFromOriginal === true && isHoveringOverLarger === false) {
+            var imageHoverContainer = document.getElementsByClassName('sih-c');
+            for (var index = 0; index < imageHoverContainer.length; index++) {
+                var element = imageHoverContainer[0];
+                element.remove();
+            }
+            isRemovalTriggeredFromOriginal = false;
+        }
     }
 
     init();
