@@ -91,7 +91,8 @@ function simpleImageHover(className) {
             var imageHoverContainer = document.getElementsByClassName('sih-c');
             for (var index = 0; index < imageHoverContainer.length; index++) {
                 var element = imageHoverContainer[0];
-                element.remove();
+                var parent = element.parentNode;
+                parent.removeChild(element);
             }
             isRemovalTriggeredFromOriginal = false;
         }

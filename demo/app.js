@@ -1,1 +1,1 @@
-var imageHover = simpleImageHover('sih');
+var imageHover = simpleImageHover('hover-image');
