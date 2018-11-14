@@ -3,3 +3,8 @@
     max-height: 200px;
     opacity: .25;
 }
+
+.image-column-container{
+    display: inline-block;
+    vertical-align: top;
+}
