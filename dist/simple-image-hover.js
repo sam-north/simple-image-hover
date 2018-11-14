@@ -22,46 +22,46 @@ function simpleImageHover(className) {
         newContainerElement.addEventListener('mouseleave', handleMouseLeaveLargerHoveredImage, false);
         document.body.appendChild(newContainerElement);
 
+        var offsetAmount = 20;
+        var marginAmount = 50;
+        var horizontalLocation = e.clientX;
+        var verticalLocation = e.clientY;
+        var verticalStyleProperty = '';
+        var horizontalStyleProperty = '';
+
+        if (horizontalLocation > (window.innerWidth / 2)) {
+            horizontalStyleProperty = 'right';
+            horizontalLocation = window.innerWidth - horizontalLocation + offsetAmount;
+        }
+        else {
+            horizontalStyleProperty = 'left';
+            horizontalLocation = horizontalLocation + offsetAmount;
+        }
+
+        if (verticalLocation > (window.innerHeight / 2)) {
+            verticalStyleProperty = 'bottom';
+            verticalLocation = window.innerHeight - verticalLocation + offsetAmount;
+        } else {
+            verticalStyleProperty = 'top';
+            verticalLocation = verticalLocation + offsetAmount;
+        }
+
         var adjustedHeightProperty = e.target.naturalHeight;
         var adjustedWidthProperty = e.target.naturalWidth;
-        var offsetAmount = 20;
-
-
-        if (adjustedHeightProperty + offsetAmount > window.innerHeight || adjustedWidthProperty + offsetAmount > window.innerWidth) {
-
-            adjustedHeightProperty = window.innerHeight - (offsetAmount * 5);
-            adjustedWidthProperty = window.innerWidth - (offsetAmount * 5);
-            var imageProportionScale = adjustedWidthProperty / window.innerWidth;
-            if (adjustedWidthProperty >= adjustedHeightProperty) {
-                adjustedHeightProperty = adjustedHeightProperty / imageProportionScale;
-            }
-            else {
-                imageProportionScale = adjustedHeightProperty / window.innerHeight;
-                adjustedWidthProperty = adjustedWidthProperty / imageProportionScale;
-            }
+        var imageProportionScale;
+        if (horizontalLocation + adjustedWidthProperty + marginAmount > window.innerWidth) {
+            var preAdjustmentWidth = adjustedWidthProperty;
+            adjustedWidthProperty = window.innerWidth - horizontalLocation - marginAmount;
+            imageProportionScale = adjustedWidthProperty / preAdjustmentWidth;
+            adjustedHeightProperty *= imageProportionScale;
         }
 
-        var verticalLocation = e.clientY;
-        var horizontalLocation = e.clientX;
-        var verticalStyleProperty = 'top';
-        var horizontalStyleProperty = 'left';
-
-        if (e.clientY + adjustedHeightProperty + offsetAmount > window.innerHeight && e.clientY - adjustedHeightProperty + offsetAmount <= 0) {
-            verticalLocation = 0;
+        if (verticalLocation + adjustedHeightProperty + marginAmount > window.innerHeight) {
+            var preAdjustmentHeight = adjustedHeightProperty;
+            adjustedHeightProperty = window.innerHeight - verticalLocation - marginAmount;
+            imageProportionScale = adjustedHeightProperty / preAdjustmentHeight;
+            adjustedWidthProperty *= imageProportionScale;
         }
-        else if (e.clientY + adjustedHeightProperty + offsetAmount > window.innerHeight) {
-            verticalStyleProperty = 'bottom';
-            verticalLocation = window.innerHeight - e.clientY - offsetAmount;
-        }
-        verticalLocation += offsetAmount;
-        if (e.clientX + e.target.naturalWidth + offsetAmount > window.innerWidth && e.clientX + e.target.naturalWidth + offsetAmount <= 0) {
-            horizontalLocation = 0;
-        }
-        else if (e.clientX + e.target.naturalWidth + offsetAmount > window.innerWidth) {
-            horizontalStyleProperty = 'right';
-            horizontalLocation = window.innerWidth - e.clientX;
-        }
-        horizontalLocation += offsetAmount;
 
         newContainerElement.setAttribute('style', 'position: fixed;z-index:2147483647; ' + '' + verticalStyleProperty + ': ' + verticalLocation + 'px;' + '' + horizontalStyleProperty + ': ' + horizontalLocation + 'px;');
         var newImgElement = document.createElement('img');
